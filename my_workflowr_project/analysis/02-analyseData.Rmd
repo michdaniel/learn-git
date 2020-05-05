@@ -23,7 +23,7 @@ Use the `prcomp` function in base R:
 ```{r}
 cur_pca <- prcomp(iris_dat[, 1:4], scale. = TRUE)
 
-plot(cur_pca$x[, 1], cur_pca$x[, 2])
+plot(cur_pca$x[, 1], cur_pca$x[, 2]) #baseR shitty function
 ```
 
 
