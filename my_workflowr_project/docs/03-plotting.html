@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+<meta name="date" content="2020-05-19" />
+
+<title>03-plotting</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">my_workflow_project</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="01-readData.html">Read in the data</a>
+</li>
+<li>
+  <a href="02-analyseData.html">Data Analysis</a>
+</li>
+<li>
+  <a href="03-plotting.html">Final figure</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">03-plotting</h1>
+<h4 class="date">2020-05-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-05-19
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>my_workflowr_project/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div class="panel-group" id="workflowr-checks">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200505code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200505)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200505code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200505)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/Users/michelle/Documents/Github/learn-git/my_workflowr_project/code/helper.R
+</td>
+<td style="text-align:left;">
+code/helper.R
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommichdaniellearngittree96c1e839470fccc8038cceb5bdde70454851beabtargetblank96c1e83a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/michdaniel/learn-git/tree/96c1e839470fccc8038cceb5bdde70454851beab" target="_blank">96c1e83</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommichdaniellearngittree96c1e839470fccc8038cceb5bdde70454851beabtargetblank96c1e83a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/michdaniel/learn-git/tree/96c1e839470fccc8038cceb5bdde70454851beab" target="_blank">96c1e83</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    my_workflowr_project/.Rhistory
+    Ignored:    my_workflowr_project/.Rproj.user/
+    Ignored:    my_workflowr_project/data/
+
+Untracked files:
+    Untracked:  .DS_Store
+    Untracked:  malcolm.txt
+    Untracked:  my_workflowr_project/analysis/03-plotting.Rmd
+
+Unstaged changes:
+    Modified:   my_workflowr_project/analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<p>#Use iris dataset</p>
+<pre class="r"><code>data(iris)
+library(ggplot2)</code></pre>
+<p>#Scatterplot</p>
+<pre class="r"><code>p1 &lt;- ggplot(data = iris) +
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width, colour = Species))
+p1</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Quickplot</p>
+<pre class="r"><code>qplot(data = iris, x = Sepal.Length, y = Sepal.Width, colour = Species, geom = &quot;point&quot;)</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="add-another-layer" class="section level2">
+<h2>Add another layer</h2>
+<p>Add a linear regression line</p>
+<pre class="r"><code>p1 &lt;- p1 + geom_smooth(mapping = aes(x = Sepal.Length, y = Sepal.Width, colour = Species), 
+                       method = &quot;lm&quot;)
+p1</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>#Facetting</p>
+<pre class="r"><code>p1 &lt;- p1 + facet_wrap(. ~ Species)
+p1</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>NPG colour scheme</p>
+<pre class="r"><code>library(ggsci)
+p1 &lt;-  p1 + scale_colour_npg()
+p1</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Create a colour vector</p>
+<pre class="r"><code>library(RColorBrewer)
+display.brewer.all(type = &quot;qual&quot;, colorblindFriendly = TRUE)</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cur_pal &lt;- brewer.pal(n = 3, name = &quot;Set2&quot;)
+colour_vec &lt;- c(setosa = cur_pal[1],
+                versicolor = cur_pal[2],
+                virginica = cur_pal[3])
+
+p1 &lt;- p1 + scale_color_manual(values = colour_vec)</code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
+<pre class="r"><code>p1</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>#Start from scratch</p>
+<pre class="r"><code>p1 &lt;- ggplot(data = iris) +
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width, fill = Species), 
+             shape= 21, size = 2) +
+  geom_smooth(mapping = aes(x = Sepal.Length, y = Sepal.Width, colour = Species), 
+                       method = &quot;lm&quot;) +
+  facet_wrap(. ~ Species, labeller = labeller(Species = c(&quot;setosa&quot; = &quot;Setosa&quot;, 
+                                                          &quot;versicolor&quot; = &quot;Versicolor&quot;, 
+                                                          &quot;virginica&quot; = &quot;Virginica&quot;))) +
+  scale_color_manual(values = colour_vec, name = &quot;Iris specis&quot;, labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  scale_fill_manual(values = colour_vec, name = &quot;Iris specis&quot;, labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  xlab(&quot;Sepal Length&quot;) +
+  ylab(&quot;Sepal Width&quot;) +
+  theme(panel.background = element_blank(),
+        panel.border = element_rect(fill = NA),
+        legend.position = c(0.67, 0.8),
+        legend.background = element_rect(colour = &quot;black&quot;),
+        axis.text = element_text(colour = &quot;black&quot;, size = 9),
+        axis.title = element_text(size = 12),
+        strip.background = element_blank(),
+        strip.text = element_text(colour = &quot;black&quot;, size = 12))
+
+p1</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>##PLot a PCA</p>
+<p>Custom PCA functino</p>
+<pre class="r"><code>source(&quot;/Users/michelle/Documents/Github/learn-git/my_workflowr_project/code/helper.R&quot;)
+
+cur_PCA &lt;- prcomp(iris[, 1:4], scale. = TRUE)
+p2 &lt;- my_plotPCA(cur_PCA, colour_by = iris$Species)
+p2</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Change theme and other</p>
+<pre class="r"><code>p2 &lt;- p2 + scale_colour_manual(values = colour_vec, name = &quot;Iris species&quot;,
+                    labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  coord_fixed() + 
+  theme(panel.background = element_blank(),
+        legend.background = element_rect(colour = &quot;black&quot;),
+        legend.position = c(1, 1), 
+        legend.justification = c(&quot;right&quot;, &quot;top&quot;),
+        axis.line = element_line(),
+        axis.ticks = element_line(colour = &quot;black&quot;),
+        axis.text = element_text(colour = &quot;black&quot;, size = 9),
+        axis.title = element_text(colour = &quot;black&quot;, size = 12))
+p2</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>##Boxplot</p>
+<p>Plot the distribution of sepal length across different species</p>
+<pre class="r"><code>set.seed(12345)
+p3 &lt;- ggplot(data = iris) +
+  geom_boxplot(mapping = aes(x = Species, y = Sepal.Length, fill = Species), outlier.colour = NA) +
+  geom_jitter(aes(x = Species, y = Sepal.Length), width = 0.1, alpha = 0.7) +
+  scale_fill_manual(values = colour_vec, name = &quot;Iris species&quot;,
+                    labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  xlab(&quot;&quot;) +
+  ylab(&quot;Sepal Length&quot;) +
+  scale_x_discrete(breaks = c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;),
+                   labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  theme(panel.background = element_blank(),
+        legend.background = element_rect(colour = &quot;black&quot;),
+        legend.position = c(0.05, 0.95), 
+        legend.justification = c(&quot;left&quot;, &quot;top&quot;),
+        axis.line = element_line(),
+        axis.ticks = element_line(colour = &quot;black&quot;),
+        axis.text.y = element_text(colour = &quot;black&quot;, size = 9),
+        axis.text.x = element_text(colour = &quot;black&quot;, size = 12),
+        axis.title = element_text(colour = &quot;black&quot;, size = 12))
+
+p3</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="barplot" class="section level2">
+<h2>Barplot</h2>
+<p>Calculate mean, sd, se and ci of the 4 different features per species</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>✓ tibble  3.0.1     ✓ dplyr   0.8.5
+✓ tidyr   1.0.2     ✓ stringr 1.4.0
+✓ readr   1.3.1     ✓ forcats 0.5.0
+✓ purrr   0.3.4     </code></pre>
+<pre><code>── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>cur_dat &lt;- iris %&gt;%
+  pivot_longer(cols = colnames(iris)[1:4]) %&gt;%
+  group_by(Species, name) %&gt;%
+  summarise(mean_val = mean(value),
+            sd_val= sd(value),
+            n_val = length(value),
+            se_val = sd_val / sqrt(n_val),
+            ci_t = qt(0.975, df = n_val - 1) * se_val)
+
+cur_dat</code></pre>
+<pre><code># A tibble: 12 x 7
+# Groups:   Species [3]
+   Species    name         mean_val sd_val n_val se_val   ci_t
+   &lt;fct&gt;      &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 setosa     Petal.Length    1.46   0.174    50 0.0246 0.0494
+ 2 setosa     Petal.Width     0.246  0.105    50 0.0149 0.0300
+ 3 setosa     Sepal.Length    5.01   0.352    50 0.0498 0.100 
+ 4 setosa     Sepal.Width     3.43   0.379    50 0.0536 0.108 
+ 5 versicolor Petal.Length    4.26   0.470    50 0.0665 0.134 
+ 6 versicolor Petal.Width     1.33   0.198    50 0.0280 0.0562
+ 7 versicolor Sepal.Length    5.94   0.516    50 0.0730 0.147 
+ 8 versicolor Sepal.Width     2.77   0.314    50 0.0444 0.0892
+ 9 virginica  Petal.Length    5.55   0.552    50 0.0780 0.157 
+10 virginica  Petal.Width     2.03   0.275    50 0.0388 0.0781
+11 virginica  Sepal.Length    6.59   0.636    50 0.0899 0.181 
+12 virginica  Sepal.Width     2.97   0.322    50 0.0456 0.0917</code></pre>
+<p>Display this in a barplot:</p>
+<pre class="r"><code>cur_dat$Measurement &lt;- factor(cur_dat$name, levels = c(&quot;Petal.Width&quot;, &quot;Petal.Length&quot;, &quot;Sepal.Width&quot;, &quot;Sepal.Length&quot;))
+
+p4 &lt;- ggplot(cur_dat, mapping = aes(x = Species, y = mean_val, fill = Measurement)) +
+  geom_bar(stat = &quot;identity&quot;, position = position_dodge()) +
+  geom_errorbar(aes(ymin = mean_val - ci_t, ymax = mean_val + ci_t), 
+                position = position_dodge(width = 0.9), width= 0.2) +
+  scale_fill_brewer(palette = &quot;Paired&quot;,
+                    labels = c(&quot;Petal Width&quot;, &quot;Petal Length&quot;, &quot;Sepal Width&quot;, &quot;Sepal Length&quot;)) +
+  labs(x = &quot;&quot;, y = &quot;Measured value [cm]&quot;) + 
+  scale_x_discrete(breaks = c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;),
+                   labels = c(&quot;Setosa&quot;, &quot;Versicolor&quot;, &quot;Virginica&quot;)) +
+  theme(panel.background = element_blank(),
+        legend.background = element_rect(colour = &quot;black&quot;),
+        legend.position = c(0.05, 0.95), 
+        legend.justification = c(&quot;left&quot;, &quot;top&quot;),
+        axis.line = element_line(),
+        axis.ticks = element_line(colour = &quot;black&quot;),
+        axis.text.y = element_text(colour = &quot;black&quot;, size = 9),
+        axis.text.x = element_text(colour = &quot;black&quot;, size = 12, angle = 45, hjust = 1),
+        axis.title = element_text(colour = &quot;black&quot;, size = 12))
+p4</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-a-heatmap" class="section level2">
+<h2>Plot a heatmap</h2>
+<p>rows: all features, cols: all samples</p>
+<pre class="r"><code>library(pheatmap)
+
+cur_dat &lt;- t(iris[1:4])
+colnames(cur_dat) &lt;- rownames(iris)
+p5 &lt;- pheatmap(cur_dat, scale = &quot;row&quot;, color = colorRampPalette(c(&quot;dark blue&quot;, &quot;white&quot;, &quot;dark red&quot;))(100),
+               annotation_col = data.frame(row.names = colnames(cur_dat),
+                                           Species = iris$Species),
+               annotation_colors = list(Species = colour_vec),
+               show_colnames = FALSE,
+               labels_row = sub(&quot;\\.&quot;, &quot; &quot;, rownames(cur_dat)))</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(p5$gtable)</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>#Stitch all figures together</p>
+<pre class="r"><code>library(cowplot)</code></pre>
+<pre><code>
+********************************************************</code></pre>
+<pre><code>Note: As of version 1.0.0, cowplot does not change the</code></pre>
+<pre><code>  default ggplot2 theme anymore. To recover the previous</code></pre>
+<pre><code>  behavior, execute:
+  theme_set(theme_cowplot())</code></pre>
+<pre><code>********************************************************</code></pre>
+<pre class="r"><code>upper_row &lt;- p1
+middle_row &lt;- plot_grid(p2 + theme(legend.title = element_text(size = 10),
+                                   legend.text = element_text(size = 8),
+                                   legend.key.size = unit(0.1, &quot;cm&quot;),
+                                   legend.position = c(1, 1.3)), 
+                        p3 + theme(legend.title = element_text(size = 10),
+                                   legend.text = element_text(size = 8),
+                                   legend.key.width = unit(0.3, &quot;cm&quot;)), 
+                        p4 + theme(legend.title = element_text(size = 8),
+                                   legend.text = element_text(size = 6),
+                                   legend.position = c(0.05, 1.1),
+                                   legend.key.size = unit(0.3, &quot;cm&quot;)), 
+                        ncol = 3, labels = c(&quot;B&quot;, &quot;C&quot;, &quot;D&quot;))
+bottom_row &lt;- p5$gtable
+
+final &lt;- plot_grid(upper_row, middle_row, bottom_row, nrow = 3, labels = c(&quot;A&quot;, &quot;&quot;, &quot;E&quot;))</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>final</code></pre>
+<p><img src="figure/03-plotting.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(filename = &quot;docs/final_figures/Fig_1.pdf&quot;, plot = final, width = 210, height = 290, units = &quot;mm&quot;)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.0 (2020-04-24)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Mojave 10.14.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] cowplot_1.0.0      pheatmap_1.0.12    forcats_0.5.0      stringr_1.4.0     
+ [5] dplyr_0.8.5        purrr_0.3.4        readr_1.3.1        tidyr_1.0.2       
+ [9] tibble_3.0.1       tidyverse_1.3.0    RColorBrewer_1.1-2 ggsci_2.9         
+[13] ggplot2_3.3.0      workflowr_1.6.2   
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.4.6     lubridate_1.7.8  lattice_0.20-41  assertthat_0.2.1
+ [5] rprojroot_1.3-2  digest_0.6.25    utf8_1.1.4       R6_2.4.1        
+ [9] cellranger_1.1.0 backports_1.1.6  reprex_0.3.0     evaluate_0.14   
+[13] httr_1.4.1       highr_0.8        pillar_1.4.3     rlang_0.4.6     
+[17] readxl_1.3.1     rstudioapi_0.11  Matrix_1.2-18    rmarkdown_2.1   
+[21] labeling_0.3     splines_4.0.0    munsell_0.5.0    broom_0.5.6     
+[25] compiler_4.0.0   httpuv_1.5.2     modelr_0.1.7     xfun_0.13       
+[29] pkgconfig_2.0.3  mgcv_1.8-31      htmltools_0.4.0  tidyselect_1.0.0
+[33] fansi_0.4.1      crayon_1.3.4     dbplyr_1.4.3     withr_2.2.0     
+[37] later_1.0.0      grid_4.0.0       nlme_3.1-147     jsonlite_1.6.1  
+[41] gtable_0.3.0     lifecycle_0.2.0  DBI_1.1.0        git2r_0.27.1    
+[45] magrittr_1.5     scales_1.1.0     cli_2.0.2        stringi_1.4.6   
+[49] farver_2.0.3     fs_1.4.1         promises_1.1.0   xml2_1.3.2      
+[53] ellipsis_0.3.0   generics_0.0.2   vctrs_0.2.4      tools_4.0.0     
+[57] glue_1.4.0       hms_0.5.3        yaml_2.2.1       colorspace_1.4-1
+[61] rvest_0.3.5      knitr_1.28       haven_2.2.0     </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

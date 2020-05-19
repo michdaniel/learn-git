@@ -1,0 +1,16 @@
+This is a file I created to help me learn vim.
+
+Below are some quotes by the great Malcolm X.
+
+You’re not to be so blind with patriotism that you can’t face reality. Wrong is wrong, no matter who does it or says it.
+
+A man who stands for nothing will fall for anything.
+
+We cannot think of being acceptable to others until we have first proven acceptable to ourselves.
+
+Truth is on the side of the oppressed.
+
+You can’t separate peace from freedom because no one can be at peace unless he has his freedom. 
+
+
+
